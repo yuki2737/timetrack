@@ -52,7 +52,10 @@ type Ctx = {
   sessions: StudySession[]
   settings: AppSettings
   t: (key: string, vars?: Record<string, string | number>) => string
-  addSession: (s: Omit<StudySession, 'id' | 'createdAt'>) => Promise<void>
+  addSession: (
+    s: Omit<StudySession, 'id' | 'createdAt'>,
+    opts?: { createdAt?: string },
+  ) => Promise<void>
   removeSession: (id: string) => Promise<void>
   setTargetBand: (b: TargetBand) => void
   setDailyHours: (band: TargetBand, h: DailyHours) => void
@@ -180,12 +183,12 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   }, [firebaseOk, user])
 
   const addSession = useCallback(
-    async (row: Omit<StudySession, 'id' | 'createdAt'>) => {
+    async (row: Omit<StudySession, 'id' | 'createdAt'>, opts?: { createdAt?: string }) => {
       const id =
         typeof crypto !== 'undefined' && crypto.randomUUID
           ? crypto.randomUUID()
           : `${Date.now()}-${Math.random().toString(16).slice(2)}`
-      const createdAt = new Date().toISOString()
+      const createdAt = opts?.createdAt ?? new Date().toISOString()
       const full: StudySession = { ...row, id, createdAt }
       if (firebaseOk && user) {
         await saveSessionDoc(user.uid, full)

@@ -1,5 +1,6 @@
-import { format, parseISO } from 'date-fns'
+import { addDays, format, parseISO } from 'date-fns'
 import { enUS, ja } from 'date-fns/locale'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useAppState } from '../context/AppState'
 import { CATEGORY_PRESETS } from '../lib/labels'
@@ -32,6 +33,7 @@ export function LogPage() {
   const [category, setCategory] = useState('')
   const [title, setTitle] = useState('')
   const [iconName, setIconName] = useState(ICON_REGISTRY[0]?.id ?? 'Mic')
+  const [selectedDate, setSelectedDate] = useState(() => format(new Date(), 'yyyy-MM-dd'))
   const [manualMinText, setManualMinText] = useState('25')
   const [manualJustSaved, setManualJustSaved] = useState(false)
   const [manualSaving, setManualSaving] = useState(false)
@@ -125,6 +127,18 @@ export function LogPage() {
     return c || t('log.uncat')
   }
 
+  function createdAtFromSelectedDate(): string {
+    const base = selectedDate || format(new Date(), 'yyyy-MM-dd')
+    return new Date(`${base}T12:00:00`).toISOString()
+  }
+
+  function moveSelectedDate(offset: number) {
+    setSelectedDate((prev) => {
+      const base = prev || format(new Date(), 'yyyy-MM-dd')
+      return format(addDays(new Date(`${base}T00:00:00`), offset), 'yyyy-MM-dd')
+    })
+  }
+
   async function stopTimer() {
     setRunning(false)
     if (elapsed < 30) {
@@ -138,6 +152,7 @@ export function LogPage() {
           elapsed,
           'timer',
         ),
+        { createdAt: createdAtFromSelectedDate() },
       )
     } catch (err) {
       console.error(err)
@@ -162,6 +177,7 @@ export function LogPage() {
           sec,
           'manual',
         ),
+        { createdAt: createdAtFromSelectedDate() },
       )
       setManualMinText('0')
       setManualJustSaved(true)
@@ -231,6 +247,33 @@ export function LogPage() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder={t('log.titlePh')}
             />
+          </label>
+          <label className="flex min-w-0 flex-col gap-1 text-left text-sm">
+            <span className="text-[var(--color-muted)]">{t('log.date')}</span>
+            <div className="inline-flex items-center gap-2">
+              <button
+                type="button"
+                className="glass-chip rounded-lg p-1 text-[var(--color-ink)]"
+                onClick={() => moveSelectedDate(-1)}
+                aria-label="Previous day"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <input
+                type="date"
+                className="glass-chip w-full min-w-0 rounded-lg px-2 py-1 text-[var(--color-ink)]"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+              />
+              <button
+                type="button"
+                className="glass-chip rounded-lg p-1 text-[var(--color-ink)]"
+                onClick={() => moveSelectedDate(1)}
+                aria-label="Next day"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
           </label>
         </div>
       </section>

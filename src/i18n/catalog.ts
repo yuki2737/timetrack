@@ -36,6 +36,7 @@ const en: Record<string, string> = {
   'log.category': 'Category',
   'log.categoryPh': 'e.g. Task 2, Shadowing',
   'log.titleField': 'Title',
+  'log.date': 'Date',
   'log.titlePh': 'Optional note',
   'log.iconsLead': 'Icons (tap to fill skill & category — edit in Settings)',
   'log.timer': 'Timer',
@@ -205,6 +206,7 @@ const ja: Record<string, string> = {
   'log.category': 'カテゴリ',
   'log.categoryPh': '例: Task 2 / シャドーイング',
   'log.titleField': 'タイトル',
+  'log.date': '日付',
   'log.titlePh': 'メモ（任意）',
   'log.iconsLead':
     'アイコン（タップで技能・カテゴリを入力 — 設定で変更可）',
