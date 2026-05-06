@@ -1,38 +1,45 @@
 # timetrack
 
-Time tracking app built with React + TypeScript + Vite.
+React + TypeScript + Vite で作成した学習時間トラッキングアプリです。
 
-## Connection status (GitHub / Firebase)
+## 現在の接続状態（GitHub / Firebase）
 
-- Local repository is initialized with Git.
-- `origin` remote is connected to `https://github.com/yuki2737/timetrack.git`.
-- Firebase project is configured as `my-app-3bc93`.
-- Hosting target `timetrack` points to site `timetrack48367`.
+- ローカルは Git リポジトリとして初期化済みです。
+- `origin` リモートは `https://github.com/yuki2737/timetrack.git` に接続されています。
+- Firebase プロジェクトは `my-app-3bc93` を使用しています。
+- Hosting ターゲット `timetrack` はサイト `timetrack48367` に紐付いています。
 
-## Auto deploy (GitHub Actions -> Firebase Hosting)
+## 自動デプロイ（GitHub Actions -> Firebase Hosting）
 
-This repository includes `.github/workflows/deploy-firebase-hosting.yml`.
+このリポジトリには `.github/workflows/deploy-firebase-hosting.yml` が含まれています。
 
-- Trigger: push to `main` (and manual `workflow_dispatch`)
-- Build: `npm ci` + `npm run build`
-- Deploy target: Firebase Hosting `live` channel
+- 実行トリガー: `main` ブランチへの push（手動実行 `workflow_dispatch` も可）
+- ビルド: `npm ci` + `npm run build`
+- デプロイ先: Firebase Hosting の `live` チャンネル
 
-### Required GitHub Secrets
+### 必要な GitHub Secrets
 
-Set the following repository secret before auto deploy works:
+自動デプロイを動かすには、GitHub リポジトリに以下の Secret が必要です。
 
 - `FIREBASE_SERVICE_ACCOUNT_MY_APP_3BC93`
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
 
-Create it from Firebase service account JSON (for project `my-app-3bc93`) and store the entire JSON content as the secret value.
+値には、Firebase のサービスアカウントキー（JSON）の内容をそのまま全文貼り付けてください。
+`VITE_...` 系は Firebase Console -> Project settings -> Your apps の値をそのまま設定してください。
 
-## Local development
+## ローカル開発
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Manual deploy (local)
+## ローカルから手動デプロイ
 
 ```bash
 npm run build
