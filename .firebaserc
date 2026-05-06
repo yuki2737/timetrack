@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "my-app-3bc93"
+  },
+  "targets": {
+    "my-app-3bc93": {
+      "hosting": {
+        "timetrack": [
+          "timetrack48367"
+        ]
+      }
+    }
+  }
+}
